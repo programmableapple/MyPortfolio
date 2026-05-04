@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rami Khayata — Software Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0a192f;
+    --surface:  #112240;
+    --surface2: #1d3461;
+    --border:   rgba(100,255,218,0.08);
+    --border2:  rgba(100,255,218,0.18);
+    --text:     #ccd6f6;
+    --muted:    #8892b0;
+    --accent:   #64ffda;
+    --accent2:  #57cbff;
+    --accent3:  #e9c46a;
+    --green:    #64ffda;
+    --amber:    #e9c46a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── MESH GRADIENT ── */
+  .mesh {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 50% at 10% 20%, rgba(100,255,218,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 90% 70%, rgba(87,203,255,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(233,196,106,0.02) 0%, transparent 70%);
+  }
+
+  /* ── NOISE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem; position: relative; z-index: 1; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,25,47,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  nav .container { display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; color: var(--muted);
+    text-decoration: none; letter-spacing: 0.1em;
+    text-transform: uppercase; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links li:nth-child(1) a::before { content: '01. '; color: var(--accent); }
+  .nav-links li:nth-child(2) a::before { content: '02. '; color: var(--accent); }
+  .nav-links li:nth-child(3) a::before { content: '03. '; color: var(--accent); }
+  .nav-links li:nth-child(4) a::before { content: '04. '; color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 0 5rem; position: relative;
+  }
+  .hero-inner { max-width: 800px; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(100,255,218,0.07);
+    border: 1px solid rgba(100,255,218,0.2);
+    border-radius: 2rem; padding: 0.35rem 1rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-tag::before { content: '●'; font-size: 0.45rem; animation: pulse 2s ease infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+
+  .hero-greeting {
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem; color: var(--accent);
+    letter-spacing: 0.05em; margin-bottom: 1.25rem;
+    animation: fadeUp 0.6s 0.05s ease both;
+  }
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.05; letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  h1 .dim { color: var(--muted); }
+
+  .hero-sub {
+    font-size: 1.1rem; color: var(--muted);
+    max-width: 560px; line-height: 1.8;
+    margin: 1.5rem 0 2.5rem;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .hero-sub strong { color: var(--text); font-weight: 400; }
+
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.7s 0.3s ease both; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: 'DM Mono', monospace; font-size: 0.8rem;
+    letter-spacing: 0.06em; text-decoration: none;
+    padding: 0.85rem 1.8rem; border-radius: 0.3rem;
+    transition: all 0.22s; cursor: pointer;
+  }
+  .btn-primary {
+    background: transparent; color: var(--accent);
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 20px rgba(100,255,218,0.1);
+  }
+  .btn-primary:hover { background: rgba(100,255,218,0.08); box-shadow: 0 0 30px rgba(100,255,218,0.2); transform: translateY(-2px); }
+  .btn-ghost { color: var(--muted); border: 1px solid var(--border2); background: transparent; }
+  .btn-ghost:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-hint {
+    position: absolute; bottom: 2.5rem; left: 2.5rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase;
+    writing-mode: vertical-rl;
+    animation: fadeUp 1s 0.9s ease both;
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+    animation: scrollAnim 1.8s ease infinite;
+  }
+  @keyframes scrollAnim {
+    0%{transform:scaleY(0);transform-origin:top}
+    50%{transform:scaleY(1);transform-origin:top}
+    51%{transform:scaleY(1);transform-origin:bottom}
+    100%{transform:scaleY(0);transform-origin:bottom}
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 0; position: relative; z-index: 1; }
+  .section-line { border-top: 1px solid var(--border); }
+
+  .sec-label {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 0.65rem;
+  }
+  .sec-label::after {
+    content: ''; flex: 1; max-width: 55px; height: 1px;
+    background: linear-gradient(to right, var(--accent), transparent);
+  }
+  .sec-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+    letter-spacing: -0.02em; margin-bottom: 0.8rem; color: var(--text);
+  }
+  .sec-desc { color: var(--muted); max-width: 500px; margin-bottom: 3rem; font-size: 0.95rem; }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 0.5rem; overflow: hidden;
+  }
+  .skill-card { background: var(--surface); padding: 1.75rem; transition: background 0.22s; }
+  .skill-card:hover { background: var(--surface2); }
+  .skill-icon {
+    width: 38px; height: 38px; border-radius: 0.4rem;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 0.9rem; font-size: 1.1rem;
+  }
+  .skill-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600; font-size: 0.92rem; margin-bottom: 0.4rem; color: var(--text);
+  }
+  .skill-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.7rem; }
+  .skill-tag {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    color: var(--muted); background: var(--bg);
+    border: 1px solid var(--border); border-radius: 0.2rem;
+    padding: 0.18rem 0.45rem;
+  }
+
+  /* ── PROJECTS ── */
+  .projects-list { display: flex; flex-direction: column; gap: 1rem; }
+  .proj-card {
+    background: var(--surface); border-radius: 0.5rem;
+    padding: 2.25rem 2.5rem;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 2rem; align-items: start;
+    border: 1px solid var(--border);
+    transition: border-color 0.22s, background 0.22s, transform 0.22s;
+    position: relative; overflow: hidden;
+  }
+  .proj-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+    opacity: 0; transition: opacity 0.22s;
+  }
+  .proj-card:hover::before { opacity: 1; }
+  .proj-card:hover { border-color: var(--border2); background: var(--surface2); transform: translateX(5px); }
+
+  .proj-num {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.55rem;
+  }
+  .proj-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 1.35rem;
+    letter-spacing: -0.02em; margin-bottom: 0.4rem; color: var(--text);
+  }
+  .wip-badge {
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: rgba(233,196,106,0.12); color: var(--amber);
+    border: 1px solid rgba(233,196,106,0.3);
+    border-radius: 2rem; padding: 0.15rem 0.6rem;
+    vertical-align: middle; margin-left: 0.6rem;
+  }
+  .proj-desc { color: var(--muted); font-size: 0.875rem; line-height: 1.75; margin-bottom: 1.1rem; max-width: 580px; }
+  .proj-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
+  .chip {
+    font-family: 'DM Mono', monospace; font-size: 0.67rem;
+    letter-spacing: 0.04em; padding: 0.28rem 0.75rem;
+    border-radius: 2rem; border: 1px solid;
+  }
+  .chip-a { color: var(--accent);  border-color: rgba(100,255,218,0.3); background: rgba(100,255,218,0.07); }
+  .chip-b { color: var(--accent2); border-color: rgba(87,203,255,0.3);  background: rgba(87,203,255,0.07); }
+  .chip-c { color: var(--green);   border-color: rgba(100,255,218,0.25);background: rgba(100,255,218,0.05); }
+  .chip-d { color: var(--amber);   border-color: rgba(233,196,106,0.3); background: rgba(233,196,106,0.07); }
+
+  .gh-link {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.05em; color: var(--muted);
+    text-decoration: none; display: inline-flex;
+    align-items: center; gap: 0.35rem; transition: color 0.2s;
+  }
+  .gh-link:hover { color: var(--accent); }
+  .gh-link svg { width: 13px; height: 13px; }
+
+  .proj-lang {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.07em; color: var(--muted);
+    text-transform: uppercase; background: var(--bg);
+    border: 1px solid var(--border); padding: 0.35rem 0.85rem;
+    border-radius: 2rem; white-space: nowrap;
+    display: block; text-align: right; line-height: 1.9;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .about-text p { color: var(--muted); margin-bottom: 0.9rem; font-size: 0.925rem; line-height: 1.85; }
+  .about-text strong { color: var(--text); font-weight: 400; }
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border); border-radius: 0.5rem;
+    overflow: hidden; margin-top: 2rem;
+  }
+  .stat { background: var(--surface); padding: 1.35rem; }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+    font-size: 2rem; letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.08em; color: var(--muted);
+    text-transform: uppercase; margin-top: 0.2rem;
+  }
+  .learning-card {
+    background: var(--surface); border-radius: 0.5rem;
+    padding: 1.75rem; border: 1px solid var(--border);
+  }
+  .learning-card h3 {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+    font-size: 0.95rem; margin-bottom: 1.1rem; color: var(--text);
+  }
+  .learn-item {
+    display: flex; align-items: center; gap: 0.65rem;
+    padding: 0.65rem 0; border-bottom: 1px solid var(--border);
+    font-size: 0.845rem; color: var(--muted);
+  }
+  .learn-item:last-child { border-bottom: none; }
+  .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .dot-a { background: var(--accent); }
+  .dot-b { background: var(--accent2); }
+  .dot-c { background: var(--amber); }
+  .gh-card {
+    margin-top: 1rem; background: var(--surface);
+    border-radius: 0.5rem; padding: 1.5rem;
+    border: 1px solid var(--border); transition: border-color 0.2s;
+  }
+  .gh-card:hover { border-color: var(--border2); }
+  .gh-card-label {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.12em; color: var(--muted);
+    text-transform: uppercase; margin-bottom: 0.9rem;
+  }
+  .gh-card a {
+    display: flex; align-items: center; gap: 0.75rem;
+    text-decoration: none; color: var(--text);
+  }
+  .gh-card a svg { color: var(--accent); flex-shrink: 0; }
+  .gh-handle { font-weight: 400; font-size: 0.9rem; }
+  .gh-url { font-size: 0.72rem; color: var(--accent); font-family: 'DM Mono', monospace; margin-top: 0.1rem; }
+
+  /* ── CONTACT ── */
+  .contact-box {
+    background: var(--surface); border-radius: 0.75rem;
+    padding: 5rem 4rem; text-align: center;
+    position: relative; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .contact-box::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 55% at 50% 0%, rgba(100,255,218,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-box h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: clamp(1.9rem, 4vw, 3.2rem);
+    letter-spacing: -0.02em; margin-bottom: 1rem; color: var(--text);
+    position: relative;
+  }
+  .contact-box h2 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .contact-box > p { color: var(--muted); max-width: 400px; margin: 0 auto 2.5rem; font-size: 0.95rem; position: relative; }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; position: relative; }
+  .contact-chip {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: 'DM Mono', monospace; font-size: 0.77rem;
+    letter-spacing: 0.06em; text-decoration: none;
+    padding: 0.75rem 1.5rem; border-radius: 0.3rem;
+    border: 1px solid var(--border2); color: var(--muted);
+    transition: all 0.22s;
+  }
+  .contact-chip:hover { color: var(--accent); border-color: var(--accent); background: rgba(100,255,218,0.07); transform: translateY(-2px); }
+  .contact-chip svg { width: 14px; height: 14px; }
+
+  /* ── FOOTER ── */
+  footer { border-top: 1px solid var(--border); padding: 2rem 0; position: relative; z-index: 1; }
+  footer .container { display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); letter-spacing: 0.05em; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .proj-card { grid-template-columns: 1fr; }
+    .proj-lang { text-align: left; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .contact-box { padding: 3rem 1.5rem; }
+    footer .container { flex-direction: column; gap: 0.4rem; text-align: center; }
+    .hero { padding-top: 6rem; }
+    .scroll-hint { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mesh"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="container">
+    <div class="nav-logo">rami khayata</div>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-tag">Available for opportunities</div>
+      <p class="hero-greeting">Hi, my name is</p>
+      <h1>Rami Khayata.<br><span class="dim">I build things for the web.</span></h1>
+      <p class="hero-sub">
+        An aspiring software developer specialising in building full-stack web applications with
+        <strong>React, Node.js & MongoDB</strong>. Passionate about clean MVC architecture,
+        scalable REST APIs, and shipping products that matter.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch →</a>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills" class="section-line">
+  <div class="container">
+    <div class="sec-label">01. Technical Stack</div>
+    <h2 class="sec-title">What I build with</h2>
+    <p class="sec-desc">Focused on the MERN stack with an MVC-first mindset — clean separation of concerns, scalable structure, production-ready code.</p>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon" style="background:rgba(100,255,218,0.08)">⚛</div>
+        <h3>React</h3>
+        <p>Building dynamic UIs with hooks, component architecture, and state management. Vite for fast dev experience.</p>
+        <div class="skill-tags"><span class="skill-tag">Hooks</span><span class="skill-tag">Vite</span><span class="skill-tag">Recharts</span><span class="skill-tag">Tailwind</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon" style="background:rgba(100,255,218,0.08)">⬡</div>
+        <h3>Node.js & Express</h3>
+        <p>Crafting scalable REST APIs with MVC structure, JWT authentication, middleware design, and clean routing.</p>
+        <div class="skill-tags"><span class="skill-tag">Express</span><span class="skill-tag">JWT</span><span class="skill-tag">Bcrypt</span><span class="skill-tag">REST</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon" style="background:rgba(87,203,255,0.08)">◈</div>
+        <h3>MongoDB</h3>
+        <p>Flexible NoSQL data modeling with Mongoose. Schema design, relations, and aggregation pipelines.</p>
+        <div class="skill-tags"><span class="skill-tag">Mongoose</span><span class="skill-tag">Atlas</span><span class="skill-tag">ODM</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon" style="background:rgba(233,196,106,0.08)">▲</div>
+        <h3>TypeScript</h3>
+        <p>Writing type-safe, maintainable code across both frontend and backend projects.</p>
+        <div class="skill-tags"><span class="skill-tag">Types</span><span class="skill-tag">Interfaces</span><span class="skill-tag">Generics</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon" style="background:rgba(87,203,255,0.08)">◻</div>
+        <h3>Docker</h3>
+        <p>Containerizing applications for consistent environments. Docker Compose for multi-service orchestration.</p>
+        <div class="skill-tags"><span class="skill-tag">Compose</span><span class="skill-tag">Containers</span><span class="skill-tag">Volumes</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon" style="background:rgba(100,255,218,0.08)">⌘</div>
+        <h3>Python</h3>
+        <p>Systems programming and desktop tooling. Tkinter GUIs, socket networking, and file I/O.</p>
+        <div class="skill-tags"><span class="skill-tag">Tkinter</span><span class="skill-tag">Sockets</span><span class="skill-tag">CLI</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects" class="section-line">
+  <div class="container">
+    <div class="sec-label">02. Work</div>
+    <h2 class="sec-title">Projects I've Built</h2>
+    <p class="sec-desc">Real applications built from scratch — each one a step forward in mastering the full stack.</p>
+    <div class="projects-list">
+
+      <div class="proj-card">
+        <div>
+          <div class="proj-num">01 — Marketplace App</div>
+          <h3 class="proj-name">RamiKart</h3>
+          <p class="proj-desc">A full-stack marketplace web application with a React frontend and a Node.js + Express backend. Structured with clean Frontend/Backend MVC separation. Includes a Postman collection for API testing and Docker Compose support for containerised deployment.</p>
+          <div class="proj-stack">
+            <span class="chip chip-a">React</span>
+            <span class="chip chip-c">Node.js</span>
+            <span class="chip chip-c">Express</span>
+            <span class="chip chip-b">TypeScript</span>
+            <span class="chip chip-d">Docker</span>
+            <span class="chip chip-d">Postman</span>
+          </div>
+          <a href="https://github.com/programmableapple/RamiKart" target="_blank" class="gh-link">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            View on GitHub
+          </a>
+        </div>
+        <div><span class="proj-lang">TypeScript 87%<br>JavaScript 12%</span></div>
+      </div>
+
+      <div class="proj-card">
+        <div>
+          <div class="proj-num">02 — FinTech App</div>
+          <h3 class="proj-name">Momentum — Financial Advisor</h3>
+          <p class="proj-desc">A premium financial management platform with a glassmorphism UI. Features real-time balance tracking, savings goal calculations, subscription detection, and beautiful data visualisations with Recharts. Secured with JWT authentication and Bcrypt password hashing. Full MERN stack.</p>
+          <div class="proj-stack">
+            <span class="chip chip-a">React 19</span>
+            <span class="chip chip-c">Node.js</span>
+            <span class="chip chip-c">MongoDB</span>
+            <span class="chip chip-b">TypeScript</span>
+            <span class="chip chip-a">Tailwind</span>
+            <span class="chip chip-d">JWT</span>
+            <span class="chip chip-d">Recharts</span>
+          </div>
+          <a href="https://github.com/programmableapple/financialAdvisor" target="_blank" class="gh-link">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            View on GitHub
+          </a>
+        </div>
+        <div><span class="proj-lang">TypeScript 83%<br>JavaScript 14%</span></div>
+      </div>
+
+      <div class="proj-card">
+        <div>
+          <div class="proj-num">03 — Systems / Networking</div>
+          <h3 class="proj-name">FileSharingPlatform</h3>
+          <p class="proj-desc">A client-server file sharing system built in Python. Supports uploading, downloading, deleting, and overwriting duplicate files. Features a Tkinter GUI on the client side and a custom server using Python's socket module — demonstrating an understanding of low-level networking and file I/O.</p>
+          <div class="proj-stack">
+            <span class="chip chip-b">Python</span>
+            <span class="chip chip-b">Tkinter</span>
+            <span class="chip chip-d">Sockets</span>
+            <span class="chip chip-c">File I/O</span>
+            <span class="chip chip-c">Client-Server</span>
+          </div>
+          <a href="https://github.com/programmableapple/FileSharingPlatform" target="_blank" class="gh-link">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            View on GitHub
+          </a>
+        </div>
+        <div><span class="proj-lang">Python 100%</span></div>
+      </div>
+
+      <div class="proj-card">
+        <div>
+          <div class="proj-num">04 — Client Project</div>
+          <h3 class="proj-name">Attorney Portfolio Hub <span class="wip-badge">Work in Progress</span></h3>
+          <p class="proj-desc">A professional web platform currently in active development, built as a centralised hub for attorneys. Full-stack MERN application structured with Docker Compose and a clean TypeScript codebase across both the frontend and backend.</p>
+          <div class="proj-stack">
+            <span class="chip chip-a">React</span>
+            <span class="chip chip-c">Node.js</span>
+            <span class="chip chip-c">MongoDB</span>
+            <span class="chip chip-b">TypeScript</span>
+            <span class="chip chip-d">Docker</span>
+          </div>
+          <a href="https://github.com/programmableapple/attorney-portfolio" target="_blank" class="gh-link">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            View on GitHub
+          </a>
+        </div>
+        <div><span class="proj-lang">TypeScript 82%<br>JavaScript 14%</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about" class="section-line">
+  <div class="container">
+    <div class="sec-label">03. About</div>
+    <h2 class="sec-title">The developer behind the code</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm an aspiring junior software developer with hands-on experience building <strong>full-stack web applications</strong> using the MERN stack. I prefer structuring code the MVC way — clean, modular, and built to scale.</p>
+        <p>My journey started with Python, exploring networking fundamentals and desktop GUI development. From there I moved into web development, where I found my passion for building APIs and <strong>reactive frontends</strong> that actually feel good to use.</p>
+        <p>I'm actively expanding into <strong>Docker and Linux virtualisation</strong> — understanding how apps are deployed and containerised is just as important to me as writing the code itself.</p>
+        <div class="about-stats">
+          <div class="stat"><div class="stat-num">4</div><div class="stat-label">Projects Built</div></div>
+          <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Languages</div></div>
+          <div class="stat"><div class="stat-num">MVC</div><div class="stat-label">Architecture</div></div>
+          <div class="stat"><div class="stat-num">MERN</div><div class="stat-label">Core Stack</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="learning-card">
+          <h3>Currently Learning & Growing</h3>
+          <div class="learn-item"><div class="dot dot-a"></div><span>Docker & container orchestration with Compose</span></div>
+          <div class="learn-item"><div class="dot dot-b"></div><span>Linux system administration & virtualisation</span></div>
+          <div class="learn-item"><div class="dot dot-c"></div><span>Advanced MongoDB aggregation & indexing</span></div>
+          <div class="learn-item"><div class="dot dot-a"></div><span>TypeScript patterns & type-safe APIs</span></div>
+          <div class="learn-item"><div class="dot dot-b"></div><span>CI/CD pipelines and deployment workflows</span></div>
+          <div class="learn-item"><div class="dot dot-c"></div><span>React performance optimisation & testing</span></div>
+        </div>
+        <div class="gh-card">
+          <div class="gh-card-label">GitHub</div>
+          <a href="https://github.com/programmableapple" target="_blank">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            <div>
+              <div class="gh-handle">programmableapple</div>
+              <div class="gh-url">github.com/programmableapple</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact" class="section-line">
+  <div class="container">
+    <div class="contact-box">
+      <div class="sec-label" style="justify-content:center;margin-bottom:1.1rem;">04. What's Next?</div>
+      <h2>Get In <span>Touch</span></h2>
+      <p>I'm actively looking for junior developer roles where I can contribute, learn, and grow alongside a great team. My inbox is always open.</p>
+      <div class="contact-links">
+        <a href="https://github.com/programmableapple" target="_blank" class="contact-chip">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="mailto:ramikhayataman@hotmail.com" class="contact-chip">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          ramikhayataman@hotmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/rami-khayata-60704a18a" target="_blank" class="contact-chip">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-copy">© 2026 Rami Khayata — All rights reserved</div>
+    <div class="footer-copy">github.com/programmableapple</div>
+  </div>
+</footer>
+
+</body>
+</html>
